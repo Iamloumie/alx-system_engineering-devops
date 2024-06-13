@@ -1,2 +1,2 @@
 #!/bin/bash
-file -c- -m school.mgc
+echo "$(file -c- -m school.mgc)"
