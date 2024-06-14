@@ -1,0 +1,2 @@
+#!/bin/bash
+find 11-directories -type d -exec chmod 755 {} +
