@@ -1,2 +1,2 @@
 #!/bin/bash
-echo ls -lt | sed '1,10!d'
+echo ls -lt | head
