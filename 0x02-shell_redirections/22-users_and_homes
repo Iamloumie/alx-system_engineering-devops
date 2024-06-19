@@ -1,2 +1,2 @@
-#!/bin/bash
-cat /etc/passwd
+#!/binbash
+awk -F: '{print "user:", $1, "\tHome Directory:", $6}' /etc/passwd
