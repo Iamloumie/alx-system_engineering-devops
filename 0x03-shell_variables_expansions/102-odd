@@ -1,2 +1,2 @@
 #!/bin/bash
-while IFS= read -r line; do echo "$line"; IFS= read -r; done < inputfile
+paste -d, - - | cut -d,-f1
