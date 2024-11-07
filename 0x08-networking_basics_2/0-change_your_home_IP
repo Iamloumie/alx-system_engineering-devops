@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# This script dissolves
+# localhost(127.0.0.1) to 127.0.0.2 and
+# 8.8.8.8 to facebook.com
+
+cp /etc/hosts ~/newhost
+sed -i s/127.0.0.1/127.0.0.2/ ~/newhost
+echo "8.8.8.8	facebook.com" >> ~/newhost
+cp -f ~/newhost /etc/hosts
