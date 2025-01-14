@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 # Bash script that transfers a file from our client to a server:
 
 # Requirements:
@@ -14,19 +13,14 @@
 	# Strict host key checking must be disabled when using scp
 
 # Checks if the correct number of parameter is provided
-
-if [ $# -lt 4]; then
-		echo "Usage: 0-transfer_file PATH_TO_FILE IP USERNAME PATH_TO_SSH_KEY"
-		exit 1
+if [ $# -lt 4 ]; then
+	echo "Usage: 0-transfer_file PATH_TO_FILE IP USERNAME PATH_TO_SSH_KEY"
+	exit 1
 fi
 
-path_to_files=$1
+path_2_file=$1
 server_ip=$2
 username=$3
-ssh_private_key=$4
+ssh_key=$4
 
-
-# Transfer the file using scp
-# -i: identity file (private key)
-# -o StrictHostKeyChecking=no: disable strict host key checking
-scp -o StrictHostKeyChecking=no -i "$ssh_private_key" "$path_to_files" "$username"@"$server_ip":~/
+scp -o StrictHostKeyChecking=no -i "$ssh_key" "$path_2_file" "$username"@"$server_ip":~/
