@@ -1,38 +1,36 @@
 #!/usr/bin/env bash
 # Installs Nginx with the following configurations:
 #+    Listens on port 80.
-#+    Returns a page containing "Holberton school" when queried
-#+    at the root with a curl GET request.
+#+    Returns a page containing "Holberton School" when queried
+#+     at the root with a curl GET request.
+# Configures /redirect_me as a "301 Moved Permanently".
+# Includes a custom 404 page containing "Ceci n'est pas une page".
 
-sudo apt-get update
-sudo apt-get install -y nginx
+apt-get update
+apt-get install -y nginx
 
-# Create web directories with proper permissions
-sudo mkdir -p /var/www/html
-sudo chown -R www-data:www-data /var/www/html
+mkdir /etc/nginx/html
+touch /etc/nginx/html/index.html
+echo "Hello World!" > /etc/nginx/html/index.html
+touch /etc/nginx/html/404.html
+echo "Ceci n'est pas une page" > /etc/nginx/html/404.html
 
-# Create web content
-echo "Holberton school" | sudo tee /var/www/html/index.html
-echo "Ceci n'est pas une page" | sudo tee /var/www/html/404.html
-
-# Configure Nginx
-sudo printf "%s" "server {
+printf %s "server {
     listen 80;
     listen [::]:80 default_server;
     add_header X-Served-By $HOSTNAME;
-    root /var/www/html;
-    index index.html index.htm;
+    root   /etc/nginx/html;
+    index  index.html index.htm;
 
     location /redirect_me {
         return 301 http://cuberule.com/;
     }
 
     error_page 404 /404.html;
-    location = /404.html {
-        root /var/www/html;
-        internal;
+    location /404 {
+      root /etc/nginx/html;
+      internal;
     }
-}" | sudo tee /etc/nginx/sites-available/default
+}" > /etc/nginx/sites-available/default
 
-# Verify configuration and restart
-sudo nginx -t && sudo service nginx restart
+service nginx restart
