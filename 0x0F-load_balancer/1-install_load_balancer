@@ -1,10 +1,29 @@
 #!/usr/bin/env bash
-# Create a script 
+# Install and configure HAProxy load balancer
 
+# Update and install HAProxy
 sudo apt-get -y update
-sudo apt-get -y install haproxy
-sudo chown $USER:USER /etc/haproxy/haproxy.cfg
+sudo apt-get -y install haproxy || { echo "Failed to install HAProxy"; exit 1; }
 
-echo "
-frontend adedamola
-"
+# Backup original config
+sudo cp /etc/haproxy/haproxy.cfg /etc/haproxy/haproxy.cfg.backup
+
+# Set permissions
+sudo chown $USER:$USER /etc/haproxy/haproxy.cfg
+
+# Write new configuration
+cat > /etc/haproxy/haproxy.cfg << EOF
+frontend iamloumie
+    bind *:80
+    mode http
+    default_backend app
+backend app
+    balance roundrobin
+    server 806434-web-01 100.25.201.126:80 check
+    server 806434-web-02 54.162.98.171:80 check
+EOF
+
+# Restart service
+sudo service haproxy restart || { echo "Failed to restart HAProxy"; exit 1; }
+
+echo "HAProxy configuration completed successfully"
