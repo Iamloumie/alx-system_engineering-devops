@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# best policy to live by? if it's broken restore the defaults, it might work
+
+#create a symlink
+sudo ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+sudo service nginx restart
