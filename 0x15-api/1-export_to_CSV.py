@@ -1,5 +1,22 @@
 #!/usr/bin/python3
-"""returns list info about the employee given an ID"""
+"""
+Fetches and displays an employee's TODO list progress from an API,
+then exports the data to a CSV file.
+
+The script retrieves user information and task completion status from
+the JSONPlaceholder API using the provided employee ID. It then saves
+the results in a CSV file named <employee_id>.csv.
+
+Usage:
+    python3 script.py <employee_id>
+
+Arguments:
+    employee_id (int): The ID of the employee whose task progress is retrieved
+
+Output:
+    - Prints the employee's completed tasks.
+    - Saves all tasks (completed and pending) to a CSV file.
+"""
 
 import csv
 import requests
@@ -29,7 +46,8 @@ def get_employee_todo_progress(employee_id):
 
         # displaying result
         print(
-            f"Employee {username} is done with tasks(" f"{
+            f"Employee {username} is done with tasks("
+            f"{
                 no_task_done}/{total_task}):"
         )
 
