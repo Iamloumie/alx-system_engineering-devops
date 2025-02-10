@@ -9,12 +9,12 @@ from sys import argv
 
 
 def get_employee_todo_progress(employee_id):
-    """the employee to do progress function"""
+    """the employee details todo progress function"""
     try:
         url = "https://jsonplaceholder.typicode.com/"
         user_datas = requests.get(url + f"users/{employee_id}")
         user_data = user_datas.json()
-        employee_name = user_data["username"]
+        username = user_data["username"]
 
         """now lets fetch the todos list for an employee
         note that we use todos?<dic_key>=value"""
@@ -29,8 +29,8 @@ def get_employee_todo_progress(employee_id):
 
         """displaying result"""
         print(
-            f"Employee {employee_name} is done with tasks("
-            f"{no_task_done}/{total_task}):"
+            f"Employee {username} is done with tasks(" f"{
+                no_task_done}/{total_task}):"
         )
         """printing the title of completed task"""
         for task in task_done:
@@ -42,7 +42,7 @@ def get_employee_todo_progress(employee_id):
             writer = csv.writer(csv_file, quoting=csv.QUOTE_ALL)
             for task in json_todos_list:
                 writer.writerow(
-                    [employee_id, employee_name, task["completed"], task["title"]]
+                    [employee_id, username, task["completed"], task["title"]]
                 )
 
     except Exception as e:
