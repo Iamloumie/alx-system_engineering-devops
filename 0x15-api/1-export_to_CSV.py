@@ -1,62 +1,57 @@
 #!/usr/bin/python3
-"""
-Python script that, using this REST API, or a given employee ID,
-returns information about his/her TODO list progress.
-and exports it as a CSV
-"""
+"""returns list info about the employee given an ID"""
 
-from sys import argv
 import csv
 import requests
+from sys import argv
+# the request module used to fetch the url response
 
-# Modules to fetch the URL response
 
-
-def get_employee_todo_prog(employee_id):
-    """returning employee todo info"""
+def get_employee_todo_progress(employee_id):
+    """the employee to do progress function"""
     try:
         url = "https://jsonplaceholder.typicode.com/"
-        user_id = requests.get(url + f"users/{employee_id}")
-        user_data = user_id.json()
-        username = user_data["username"]
+        user_datas = requests.get(url + f"users/{employee_id}")
+        user_data = user_datas.json()
+        employee_name = user_data["username"]
 
-        # fetch todo list for the employee, convert to json
+        # now lets fetch the todos list for an employee
+        # note that we use todos?<dic_key>=value
         todos_list = requests.get(url + f"todos?userId={employee_id}")
         json_todos_list = todos_list.json()
 
-        # calculate the tasks done and todos left
+        # calculate the task done and left todo
         total_task = len(json_todos_list)
 
-        # check the task completed by the employee
+        # check the completed task
         task_done = [task for task in json_todos_list if task["completed"]]
         no_task_done = len(task_done)
 
-        # Displaying the result
+        # displaying result
         print(
-            f"Employee {username} is done with tasks("
-            f"{
-                no_task_done}/{total_task}):"
+            f"Employee {employee_name} is done with tasks("
+            f"{no_task_done}/{total_task}):"
         )
 
-        # displaying the Title of completed tasks
+        # printing the title of completed task
         for task in task_done:
             print(f"\t {task['title']}")
 
-        # Exporting the employee data to csv format
+        # exporting data to csv
         csv_filename = f"{employee_id}.csv"
-        with open(csv_filename, "w", newline="", encoding="utf-8") as csv_file:
+        with open(csv_filename, mode="w", newline="") as csv_file:
             writer = csv.writer(csv_file, quoting=csv.QUOTE_ALL)
             for task in json_todos_list:
                 writer.writerow(
-                    [employee_id, username, task["completed"], task["title"]]
+                    [employee_id, employee_name, task["completed"], task["title"]]
                 )
 
     except Exception as e:
-        print(f"AN ERROR OCCURRED: {e}")
+        print(f"an error occured: {e}")
 
 
 if __name__ == "__main__":
     if len(argv) != 2:
-        print("Usage: Script <employee_id>")
+        print("Usage: script <emplyee_id>")
     else:
-        get_employee_todo_prog(argv[1])
+        get_employee_todo_progress(argv[1])
