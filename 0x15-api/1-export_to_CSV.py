@@ -18,7 +18,7 @@ def get_employee_todo_prog(employee_id):
         url = "https://jsonplaceholder.typicode.com/"
         user_id = requests.get(url + f"users/{employee_id}")
         user_data = user_id.json()
-        employ_nam = user_data["name"]
+        username = user_data["username"]
 
         # fetch todo list for the employee, convert to json
         todos_list = requests.get(url + f"todos?userId={employee_id}")
@@ -33,8 +33,9 @@ def get_employee_todo_prog(employee_id):
 
         # Displaying the result
         print(
-            f"Employee {employ_nam} is done with tasks("
-            f"{no_task_done}/{total_task}):"
+            f"Employee {username} is done with tasks("
+            f"{
+                no_task_done}/{total_task}):"
         )
 
         # displaying the Title of completed tasks
@@ -47,7 +48,7 @@ def get_employee_todo_prog(employee_id):
             writer = csv.writer(csv_file, quoting=csv.QUOTE_ALL)
             for task in json_todos_list:
                 writer.writerow(
-                    [employee_id, employ_nam, task["completed"], task["title"]]
+                    [employee_id, username, task["completed"], task["title"]]
                 )
 
     except Exception as e:

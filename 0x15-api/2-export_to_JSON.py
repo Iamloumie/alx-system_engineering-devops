@@ -17,7 +17,7 @@ def get_employee_todo_prog(employee_id):
         url = "https://jsonplaceholder.typicode.com/"
         user_id = requests.get(url + f"users/{employee_id}")
         user_data = user_id.json()
-        employee_name = user_data["name"]
+        employee_name = user_data["username"]
 
         # fetch todo list for the employee
         todos_list = requests.get(url + f"todos?userId={employee_id}")
