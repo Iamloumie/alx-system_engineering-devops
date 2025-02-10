@@ -4,7 +4,8 @@
 import csv
 import requests
 from sys import argv
-# the request module used to fetch the url response
+
+""" the request module used to fetch the url response"""
 
 
 def get_employee_todo_progress(employee_id):
@@ -13,38 +14,35 @@ def get_employee_todo_progress(employee_id):
         url = "https://jsonplaceholder.typicode.com/"
         user_datas = requests.get(url + f"users/{employee_id}")
         user_data = user_datas.json()
-        username = user_data["username"]
+        employee_name = user_data["username"]
 
-        # now lets fetch the todos list for an employee
-        # note that we use todos?<dic_key>=value
+        """now lets fetch the todos list for an employee
+        note that we use todos?<dic_key>=value"""
         todos_list = requests.get(url + f"todos?userId={employee_id}")
         json_todos_list = todos_list.json()
 
-        # calculate the task done and left todo
+        """calculate the task done and left todo"""
         total_task = len(json_todos_list)
-
-        # check the completed task
+        """check the completed task"""
         task_done = [task for task in json_todos_list if task["completed"]]
         no_task_done = len(task_done)
 
-        # displaying result
+        """displaying result"""
         print(
-            f"Employee {username} is done with tasks("
-            f"{
-                no_task_done}/{total_task}):"
+            f"Employee {employee_name} is done with tasks("
+            f"{no_task_done}/{total_task}):"
         )
-
-        # printing the title of completed task
+        """printing the title of completed task"""
         for task in task_done:
             print(f"\t {task['title']}")
 
-        # exporting data to csv
+        """ exporting data to csv"""
         csv_filename = f"{employee_id}.csv"
         with open(csv_filename, mode="w", newline="") as csv_file:
             writer = csv.writer(csv_file, quoting=csv.QUOTE_ALL)
             for task in json_todos_list:
                 writer.writerow(
-                    [employee_id, username, task["completed"], task["title"]]
+                    [employee_id, employee_name, task["completed"], task["title"]]
                 )
 
     except Exception as e:
